@@ -4,8 +4,6 @@
 
 **A privacy-first writing assistant built for security writers.**
 
-CTF writeups · HTB/THM walkthroughs · DFIR & incident reports · security blog posts
-
 ![Status](https://img.shields.io/badge/status-Phase%200%20(scaffold)-orange)
 ![Next.js](https://img.shields.io/badge/Next.js-black?logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
