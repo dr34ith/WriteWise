@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* Switches Tailwind's `dark:` variant from media-query-driven (v4 default) to class-driven, so
+   an explicit toggle can override the system preference. Every existing `dark:` utility class
+   keeps working unchanged. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light (lavender/mint) is the primary, default theme — dark is a complementary, equally
+   tuned palette, not a flat inversion. See storage.ts loadTheme/saveTheme for persistence. */
+:root {
+  --background: #faf7ff;
+  --surface: #ffffff;
+  --surface-muted: #f3eefb;
+  --foreground: #2b2640;
+  --foreground-muted: #6b6380;
+  --border: #e4dbf5;
+  --primary: #8b7fd6;
+  --primary-foreground: #ffffff;
+  --primary-hover: #7a6cc9;
+  --accent: #f6a8c4;
+  --accent-mint: #9fe6c4;
+
+  --severity-info: #9ca3af;
+  --severity-suggestion: #8b7fd6;
+  --severity-warning: #d97706;
+  --severity-error: #dc2626;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-accent: var(--accent);
+  --color-accent-mint: var(--accent-mint);
+  --color-severity-info: var(--severity-info);
+  --color-severity-suggestion: var(--severity-suggestion);
+  --color-severity-warning: var(--severity-warning);
+  --color-severity-error: var(--severity-error);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-quicksand);
+
+  --animate-fade-in: ww-fade-in 0.2s ease-out;
+  --animate-pop-in: ww-pop-in 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-bounce-pop: ww-bounce-pop 0.3s ease-in-out;
+}
+
+/* System preference applies only until the user explicitly picks a theme (see storage.ts
+   loadTheme/saveTheme) — at that point the .dark/.light class below always wins. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light):not(.dark) {
+    --background: #1b1730;
+    --surface: #241f3d;
+    --surface-muted: #2c2650;
+    --foreground: #ece8fb;
+    --foreground-muted: #afa8c9;
+    --border: #3a3360;
+    --primary: #b3a6f2;
+    --primary-foreground: #1b1730;
+    --primary-hover: #c4b9f5;
+    --accent: #f6a8c4;
+    --accent-mint: #7fd9ac;
+
+    --severity-info: #8b8aa3;
+    --severity-suggestion: #b3a6f2;
+    --severity-warning: #f0b429;
+    --severity-error: #ff6b81;
+  }
+}
+
+.dark {
+  --background: #1b1730;
+  --surface: #241f3d;
+  --surface-muted: #2c2650;
+  --foreground: #ece8fb;
+  --foreground-muted: #afa8c9;
+  --border: #3a3360;
+  --primary: #b3a6f2;
+  --primary-foreground: #1b1730;
+  --primary-hover: #c4b9f5;
+  --accent: #f6a8c4;
+  --accent-mint: #7fd9ac;
+
+  --severity-info: #8b8aa3;
+  --severity-suggestion: #b3a6f2;
+  --severity-warning: #f0b429;
+  --severity-error: #ff6b81;
+}
+
+.light {
+  --background: #faf7ff;
+  --surface: #ffffff;
+  --surface-muted: #f3eefb;
+  --foreground: #2b2640;
+  --foreground-muted: #6b6380;
+  --border: #e4dbf5;
+  --primary: #8b7fd6;
+  --primary-foreground: #ffffff;
+  --primary-hover: #7a6cc9;
+  --accent: #f6a8c4;
+  --accent-mint: #9fe6c4;
+
+  --severity-info: #9ca3af;
+  --severity-suggestion: #8b7fd6;
+  --severity-warning: #d97706;
+  --severity-error: #dc2626;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Issue severity underlines, drawn via CodeMirror decorations. Never the only signal of
+   severity — IssuePanel also labels each issue with text, not color alone. Dotted vs wavy
+   shape is the non-color cue; error is additionally thicker than the other three. */
+.ww-issue-info {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--severity-info);
+  text-decoration-thickness: 2px;
+}
+.ww-issue-suggestion {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--severity-suggestion);
+  text-decoration-thickness: 2px;
+}
+.ww-issue-warning {
+  text-decoration: underline wavy;
+  text-decoration-color: var(--severity-warning);
+  text-decoration-thickness: 2px;
+}
+.ww-issue-error {
+  text-decoration: underline wavy;
+  text-decoration-color: var(--severity-error);
+  text-decoration-thickness: 2.5px;
+}
+
+@keyframes ww-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ww-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes ww-bounce-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
